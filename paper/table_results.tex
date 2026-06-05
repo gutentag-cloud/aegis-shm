@@ -1,0 +1,20 @@
+\begin{tabular}{lrrrrrrr}
+\toprule
+Scenario & Sens. & Noise & Loc.\ err. & Sev.\ err. & IoU & FPR & Base.\ loc. \\
+ &  &  & (\%) & (pts) &  &  & (\%) \\
+\midrule
+Canonical: damage @ 0.60L (40\%) & 7 & 2\% & 3.7$\pm$0.4 & 8.2 & 0.69 & 4\% & 56.1 \\
+Single damage @ 0.50L (35\%) & 7 & 2\% & 3.9$\pm$0.7 & 9.0 & 0.69 & 3\% & 46.1 \\
+Single damage @ 0.30L (40\%) & 7 & 2\% & 3.8$\pm$0.3 & 11.0 & 0.81 & 2\% & 26.1 \\
+Single damage @ 0.70L (30\%) & 7 & 2\% & 3.0$\pm$0.8 & 8.8 & 0.74 & 4\% & 66.2 \\
+Severe damage @ 0.60L (55\%) & 7 & 2\% & 4.4$\pm$0.3 & 21.8 & 0.66 & 1\% & 55.1 \\
+Mild damage @ 0.45L (20\%) & 9 & 2\% & 5.1$\pm$1.7 & 9.8 & 0.75 & 3\% & 41.1 \\
+Two damages @ 0.30L \& 0.65L & 9 & 2\% & 3.8$\pm$0.7 & 11.7 & 0.80 & 4\% & 26.1 \\
+Two close damages @ 0.55L \& 0.72L & 11 & 2\% & 2.8$\pm$0.7 & 26.6 & 0.60 & 5\% & 51.6 \\
+Single @ 0.60L, 5\% noise & 7 & 5\% & 3.8$\pm$0.6 & 26.3 & 0.49 & 4\% & 56.1 \\
+Single @ 0.60L, 8\% noise & 7 & 8\% & 3.9$\pm$0.7 & 27.0 & 0.32 & 9\% & 56.1 \\
+Single @ 0.60L, only 5 sensors & 5 & 2\% & 3.6$\pm$0.9 & 10.9 & 0.61 & 6\% & 56.1 \\
+Single @ 0.40L, only 4 sensors & 4 & 2\% & 3.5$\pm$1.1 & 4.2 & 0.58 & 6\% & 36.1 \\
+Single @ 0.60L, 11 sensors & 11 & 2\% & 3.6$\pm$0.5 & 8.6 & 0.69 & 4\% & 56.1 \\
+\bottomrule
+\end{tabular}

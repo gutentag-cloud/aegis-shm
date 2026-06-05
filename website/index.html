@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aegis · Physics-Informed Damage Localization</title>
+  <meta name="description" content="Aegis: a physics-informed neural network that localizes hidden structural damage from only a handful of sensors." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">▤</span>
+      <div>
+        <h1>Aegis</h1>
+        <p class="tag">Physics-Informed Structural Damage Localization</p>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="how">How it works</button>
+      <button class="tab" data-tab="demo">Live demo</button>
+      <button class="tab" data-tab="results">Results</button>
+      <button class="tab" data-tab="paper">Paper</button>
+      <button class="tab" data-tab="about">About</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- OVERVIEW ----------------------------------------------------------->
+    <section class="panel active" id="overview">
+      <div class="hero">
+        <div class="hero-text">
+          <h2>Find hidden damage in a bridge<br/>with a handful of sensors.</h2>
+          <p>
+            Aging beams and bridges develop invisible internal damage — local
+            losses of stiffness — long before they fail. Dense sensor networks
+            can find it, but they are expensive. <strong>Aegis</strong> embeds
+            the governing equation of the structure directly into a neural
+            network, so it can <em>localize and quantify</em> damage from only a
+            few sparse, noisy deflection measurements.
+          </p>
+          <div class="cta">
+            <button class="btn primary" data-goto="demo">Try the live demo →</button>
+            <button class="btn" data-goto="how">See how it works</button>
+          </div>
+          <div class="stat-row" id="headline-stats">
+            <div class="stat"><div class="num" id="hs-loc">—</div><div class="lbl">localization error</div></div>
+            <div class="stat"><div class="num" id="hs-auc">—</div><div class="lbl">detection AUC</div></div>
+            <div class="stat"><div class="num" id="hs-sensors">—</div><div class="lbl">sensors used</div></div>
+            <div class="stat"><div class="num" id="hs-improve">—</div><div class="lbl">vs. classical method</div></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <canvas id="hero-canvas"></canvas>
+          <div class="hero-caption">True damage (grey) vs. Aegis reconstruction (gold) from sparse sensors (dots).</div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>① Physics, not just data</h3>
+          <p>The Euler–Bernoulli beam equation is baked into the loss. The
+            network cannot return a physically impossible structure.</p>
+        </div>
+        <div class="card">
+          <h3>② Sparse &amp; noisy-robust</h3>
+          <p>Works with a handful of sensors and realistic measurement noise,
+            where classical curvature methods break down.</p>
+        </div>
+        <div class="card">
+          <h3>③ Continuous damage map</h3>
+          <p>Outputs a full stiffness field EI(x) — location <em>and</em>
+            severity — not a single yes/no alarm.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS ------------------------------------------------------->
+    <section class="panel" id="how">
+      <h2>How it works</h2>
+      <p class="lead">Aegis solves an <em>inverse problem</em>: given how the
+        beam bends under known loads, infer the stiffness field that explains it.
+        The panel below runs the real beam physics live in your browser — move
+        the damage and watch the structure respond.</p>
+
+      <div class="sim">
+        <div class="sim-controls">
+          <label>Damage location <output id="o-loc">0.60</output>
+            <input type="range" id="r-loc" min="0.1" max="0.9" step="0.01" value="0.6"/></label>
+          <label>Damage severity <output id="o-sev">40%</output>
+            <input type="range" id="r-sev" min="0" max="0.8" step="0.01" value="0.4"/></label>
+          <label>Damage width <output id="o-wid">0.08</output>
+            <input type="range" id="r-wid" min="0.02" max="0.2" step="0.01" value="0.08"/></label>
+          <label>Load case
+            <select id="s-load"></select></label>
+          <label>Sensors <output id="o-sen">7</output>
+            <input type="range" id="r-sen" min="3" max="15" step="1" value="7"/></label>
+        </div>
+        <div class="sim-plots">
+          <div class="plotbox"><canvas id="defl-canvas"></canvas></div>
+          <div class="plotbox"><canvas id="stiff-canvas"></canvas></div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step"><span>1</span><p>Known smooth loads <code>q(x)</code> are applied; sensors record the deflection at a few points.</p></div>
+        <div class="step"><span>2</span><p>A neural network represents the unknown stiffness field <code>EI(x)</code>, initialized to a healthy beam.</p></div>
+        <div class="step"><span>3</span><p>An exact, differentiable beam solver turns any <code>EI(x)</code> into a predicted deflection — so the physics always holds.</p></div>
+        <div class="step"><span>4</span><p>Sparsity + total-variation priors keep the recovered damage localized and clean.</p></div>
+      </div>
+
+      <div class="eqbox">
+        <div class="eq">∂²/∂x² [ EI(x) · ∂²w/∂x² ] = q(x)</div>
+        <div class="eqlabel">Euler–Bernoulli equation — embedded directly in the training loss</div>
+      </div>
+    </section>
+
+    <!-- LIVE DEMO ---------------------------------------------------------->
+    <section class="panel" id="demo">
+      <h2>Live demo — real Aegis reconstructions</h2>
+      <p class="lead">Every reconstruction below is the actual trained-model
+        output saved from our experiments. Pick a scenario to compare the true
+        damage, the Aegis recovery (with its <strong>±1σ uncertainty band</strong>
+        over independent noise realizations), and the classical baseline. Metrics
+        are reported as mean ± standard deviation.</p>
+
+      <div class="demo-grid">
+        <aside class="demo-side">
+          <label class="fld">Scenario
+            <select id="scenario-select"></select></label>
+          <div class="scn-meta" id="scn-meta"></div>
+          <div class="metric-cards" id="metric-cards"></div>
+        </aside>
+        <div class="demo-main">
+          <div class="plotbox tall"><canvas id="demo-damage"></canvas></div>
+          <div class="plotbox"><canvas id="demo-defl"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS ------------------------------------------------------------>
+    <section class="panel" id="results">
+      <h2>Results</h2>
+      <p class="lead">Aggregate performance across the full experiment suite
+        (generated by <code>run_experiments.py</code>).</p>
+      <div class="table-wrap"><table id="results-table"><thead></thead><tbody></tbody></table></div>
+      <h3>Figures</h3>
+      <div class="figgrid" id="figgrid"></div>
+    </section>
+
+    <!-- PAPER -------------------------------------------------------------->
+    <section class="panel" id="paper">
+      <h2>Paper</h2>
+      <p class="lead">A full write-up with governing equations, methodology,
+        experiments, and references.</p>
+      <div class="paper-actions">
+        <a class="btn primary" href="assets/aegis.pdf" target="_blank" rel="noopener">Open PDF ↗</a>
+        <a class="btn" href="assets/aegis.tex" download>Download LaTeX source</a>
+      </div>
+      <div id="abstract-box" class="abstract"></div>
+      <div class="pdf-wrap"><iframe id="pdf-frame" src="assets/aegis.pdf" title="Aegis paper"></iframe></div>
+    </section>
+
+    <!-- ABOUT -------------------------------------------------------------->
+    <section class="panel" id="about">
+      <h2>About this project</h2>
+      <p class="lead">Aegis was built as a self-contained, reproducible research
+        artifact for the International Science and Engineering Fair (ISEF),
+        engineering — physics.</p>
+      <div class="cards">
+        <div class="card"><h3>Reproducible</h3><p>Every number on this site is
+          produced by the code in this repository from exact, physics-based data —
+          no proprietary datasets.</p></div>
+        <div class="card"><h3>Impact</h3><p>Cheaper structural-health monitoring
+          for aging bridges and buildings, and faster post-earthquake triage.</p></div>
+        <div class="card"><h3>Honest scope</h3><p>Validated on 1-D Euler–Bernoulli
+          beams in simulation; the discussion section lays out the path to real
+          structures.</p></div>
+      </div>
+      <h3>Reproduce everything</h3>
+      <pre class="code">pip install -r requirements.txt
+python src/run_experiments.py      # runs the full suite, writes results.json
+python src/make_figures.py         # regenerates all figures
+tectonic paper/aegis.tex           # rebuilds the PDF</pre>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Aegis · Physics-Informed Neural Networks for Sparse-Sensor Structural Damage Localization</span>
+    <span id="foot-generated"></span>
+  </footer>
+
+  <script src="data/results.js"></script>
+  <script src="js/beam.js"></script>
+  <script src="js/plot.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

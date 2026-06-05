@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies (CPU-only PyTorch)
+        run: |
+          python -m pip install --upgrade pip
+          pip install --index-url https://download.pytorch.org/whl/cpu torch
+          pip install numpy scipy matplotlib pytest
+      - name: Run physics self-tests
+        run: |
+          python src/beam_simulation.py
+          python src/check_solver.py
+      - name: Run test suite
+        run: pytest -q
