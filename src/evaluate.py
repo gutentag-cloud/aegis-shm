@@ -69,7 +69,7 @@ def false_positive_rate(d_pred, d_true, thresh=0.05):
 def integrated_damage(x_grid, d):
     """Total stiffness loss  integral d(x) dx -- the aggregate severity, which is
     far better constrained by sparse data than the peak (width/depth trade-off)."""
-    _trapz = getattr(np, "trapezoid", np.trapz)
+    _trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
     return float(_trapz(d, x_grid))
 
 

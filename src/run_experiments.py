@@ -144,7 +144,7 @@ def detection_study(cfg_kwargs, severities, n_trials, n_sensors=7, noise=0.02):
         thr = np.linspace(0, hi, 200)
         tpr = np.array([np.mean(np.array(stats) >= t) for t in thr])
         fpr = np.array([np.mean(np.array(healthy) >= t) for t in thr])
-        _trapz = getattr(np, "trapezoid", np.trapz)
+        _trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
         auc = float(np.abs(_trapz(tpr, fpr)))
         roc.append(dict(severity=int(sev * 100), fpr=fpr.tolist(), tpr=tpr.tolist(), auc=auc))
         print(f"   detection @ {int(sev*100)}% damage: AUC={auc:.3f} "
