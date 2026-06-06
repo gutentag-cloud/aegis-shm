@@ -109,8 +109,8 @@ pytest -q                 # 5 tests: FEM vs analytical, solver vs FEM (both BCs)
 ```
 
 Every push runs the physics self-tests and the full suite in GitHub Actions
-(`.github/workflows/ci.yml`). After pushing, replace `OWNER/REPO` to enable the
-badge: `![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)`.
+(`.github/workflows/ci.yml`); a second workflow (`pages.yml`) redeploys the live
+site. Both badges are at the top of this README.
 
 ## The website
 
