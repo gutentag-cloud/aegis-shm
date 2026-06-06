@@ -2,8 +2,10 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "Aegis: Physics-Informed Neural Networks for Sparse-Sensor Structural Damage Localization"
 authors:
-  - family-names: "[Last Name]"
-    given-names: "[First Name]"
+  - family-names: "Wong"
+    given-names: "Jaden"
+    affiliation: "Diocesan Boys' School, Hong Kong"
+repository-code: "https://github.com/gutentag-cloud/aegis-shm"
 abstract: >-
   Aegis localizes and quantifies structural damage (local stiffness loss in an
   Euler-Bernoulli beam) from sparse, noisy sensors by coupling a neural stiffness

@@ -34,6 +34,11 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0c1226;
 .tab:hover{color:var(--ink);background:#172145}
 .tab.active{color:#1a1406;background:linear-gradient(160deg,var(--gold),var(--gold2));
   font-weight:700}
+.tab.gh{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);
+  margin-left:6px;color:var(--ink);text-decoration:none}
+.tab.gh:hover{border-color:var(--gold);color:var(--gold);background:#172145;transform:none}
+.tab.gh svg{display:block}
+@media (max-width:560px){.tab.gh span{display:none}}
 
 main{max-width:1140px;margin:0 auto;padding:30px 24px 60px}
 .panel{display:none;animation:fade .25s ease}

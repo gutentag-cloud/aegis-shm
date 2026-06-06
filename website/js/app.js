@@ -19,7 +19,7 @@
     try { history.replaceState(null, "", "#" + name); } catch (e) {}
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  $$(".tab").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
+  $$(".tab[data-tab]").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
   $$("[data-goto]").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.goto)));
 
   // ------------------------------------------------------- headline stats //

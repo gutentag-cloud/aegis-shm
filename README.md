@@ -1,12 +1,18 @@
 # Aegis — Physics-Informed Neural Networks for Sparse-Sensor Structural Damage Localization
 
+[![CI](https://github.com/gutentag-cloud/aegis-shm/actions/workflows/ci.yml/badge.svg)](https://github.com/gutentag-cloud/aegis-shm/actions/workflows/ci.yml)
+[![Pages](https://github.com/gutentag-cloud/aegis-shm/actions/workflows/pages.yml/badge.svg)](https://github.com/gutentag-cloud/aegis-shm/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-c8901a.svg)](LICENSE)
+
+### ▶ Live interactive demo — **https://gutentag-cloud.github.io/aegis-shm/**
+
 > Find hidden damage in a beam or bridge — its **location and severity** — from
 > only a handful of sparse, noisy sensors, by embedding the Euler–Bernoulli beam
 > equation directly into a neural network.
 
 Aegis is a complete, reproducible research artifact (paper + code + interactive
 website) prepared for the International Science and Engineering Fair (ISEF),
-**Engineering — Physics**.
+**Engineering — Physics**, by **Jaden Wong** (Diocesan Boys' School, Hong Kong).
 
 ---
 
